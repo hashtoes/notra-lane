@@ -1,11 +1,12 @@
 <script lang="ts">
+  import Hello from '$components/Hello.svelte';
 	let numLanes = 28;
 </script>
 
 <div class="full-height">
   <div class="lane-pane">
     {#each Array(numLanes).fill(0) as idx}
-      <div>hello</div>
+      <Hello />
     {/each}
   </div>
   <div class="input-pane"></div>
@@ -17,6 +18,7 @@
 	}
   .lane-pane {
     height: 80vh;
+    overflow-x: hidden;
     overflow-y: scroll;
   }
   .input-pane {
