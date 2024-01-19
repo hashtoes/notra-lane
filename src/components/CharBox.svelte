@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { charWidth } from '$lib/constants';
-	import { cssString } from '$lib/utils';
+  import { charWidth } from '$lib/constants';
+  import { cssString } from '$lib/utils';
 
-	export let character: string;
+  export let character: string;
 
   const style = cssString({
-    width: `${charWidth}px`,
+    width: `${charWidth}px`
   });
 </script>
 

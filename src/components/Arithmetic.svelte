@@ -1,32 +1,40 @@
 <script lang="ts">
-	import { cssString } from "$lib/utils";
-	import { generateProblem } from "$lib/arithmetics";
-  import TextBar from "./TextBar.svelte";
+  import { createEventDispatcher } from 'svelte';
+  import { charWidth } from '$lib/constants';
+  import type { Result } from '$lib/types';
+  import { cssString } from '$lib/utils';
+  import { generateProblem } from '$lib/arithmetics';
+  import { answer } from '$stores/problem';
+  import TextBar from './TextBar.svelte';
 
-  const problem = generateProblem().problem;
-  let leftMargin = 100; // vw
+  export let width: number;
+
+  $: leftMargin = Math.random() * width * 2 + width;
+
+  const dispatch = createEventDispatcher<Result>();
+
+  const slideSpeed = 1;
+  const problem = generateProblem();
 
   $: style = cssString({
-    'margin-left': `${leftMargin}vw`
+    'margin-left': `${leftMargin}px`
   });
 
   const intervalId = setInterval(() => {
-    leftMargin -= 1;
-    if (leftMargin <= -100) {
+    leftMargin -= slideSpeed;
+    if (leftMargin <= -(charWidth * problem.statement.length)) {
       clearInterval(intervalId);
+      dispatch('message', 'timeover');
     }
-  }, 20);
+  }, 10);
+
+  const onClick = () => {
+    answer.set(problem.answer);
+  };
 </script>
 
-<div class="lane" {style}>
-  <!-- <TextBar text="わたのはらやそしまかけてこぎいでぬとひとにはつげよあまのつりぶね" /> -->
-  <!-- <TextBar text="this is a text string. hello world." /> -->
-  <TextBar text={problem} />
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div {style} on:click={onClick}>
+  <TextBar text={problem.statement} />
 </div>
-
-<style>
-  .lane {
-    box-sizing: border-box;
-    border-top: 1px dotted;
-  }
-</style>
