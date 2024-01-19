@@ -1,28 +1,37 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import Lane from '$components/Lane.svelte';
   import Input from '$components/Input.svelte';
-  import { answer } from '$stores/problem';
+  import { answer, laneId } from '$stores/selected';
   import type { Result } from '$lib/types';
+  import { tick } from 'svelte';
 
-  let numLanes = 3;
+  let numLanes = Number($page.url.searchParams.get('num')) || 3;
   let gameOver = false;
 
-  const onMessage = (e: CustomEvent<Result['message']>) => {
-    if (!gameOver && e.detail !== 'correct') {
+  let empties = Array<boolean>(numLanes).fill(false);
+
+  const onMessage = (result: Result['message'], index: number) => {
+    if (!gameOver && result !== 'correct') {
       gameOver = true;
-      alert(e.detail);
+      alert(result);
+      return;
     }
+    empties[index] = true;
+    tick().then(() => {
+      empties[index] = false;
+    });
   };
 </script>
 
 <div class="full-height">
   <div class="lane-pane">
-    {#each Array(numLanes).fill(0) as idx}
-      <Lane on:message={onMessage} />
+    {#each empties as empty, idx}
+      <Lane id={idx} {empty} on:message={(e) => onMessage(e.detail, idx)} />
     {/each}
   </div>
   <div class="input-pane">
-    <Input answer={$answer} on:message={onMessage} />
+    <Input answer={$answer} on:message={(e) => onMessage(e.detail, $laneId)} />
   </div>
 </div>
 
