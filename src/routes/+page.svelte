@@ -38,6 +38,7 @@
 <style>
   .full-height {
     height: 100vh;
+    user-select: none;
   }
   .lane-pane {
     height: 80vh;
