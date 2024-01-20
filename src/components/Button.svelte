@@ -9,7 +9,9 @@
     margin: 2px;
     border: solid 1px;
     background-color: #efefef;
-    width: 50px;
+    width: 70px;
+    height: 40px;
+    line-height: 40px;
     text-align: center;
   }
 </style>

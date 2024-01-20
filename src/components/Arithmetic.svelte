@@ -12,12 +12,16 @@
 
   $: leftMargin = Math.random() * width * 2 + width;
   $: style = cssString({
-    'margin-left': `${leftMargin}px`
+    'padding-left': `${leftMargin >= 0 ? leftMargin : 0}px`,
+    'margin-left': `${leftMargin < 0 ? leftMargin : 0}px`,
+    // TODO: loses border with this.
+    // 'background-color': `${id === $laneId ? '#ababab' : '#ffffff'}`
   });
 
   const dispatch = createEventDispatcher<Result>();
 
   const slideSpeed = 1;
+  const slideInterval = Math.floor(Math.random() * 5) + 7;
   const problem = generateProblem();
 
   const intervalId = setInterval(() => {
@@ -26,7 +30,7 @@
       clearInterval(intervalId);
       dispatch('message', 'timeover');
     }
-  }, 10);
+  }, slideInterval);
 
   const onClick = () => {
     answer.set(problem.answer);
@@ -40,6 +44,13 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div {style} on:click={onClick}>
+<div class="arith" {style} on:click={onClick}>
   <TextBar text={problem.statement} />
 </div>
+
+<style>
+  .arith {
+    height: 48px;
+    line-height: 48px;
+  }
+</style>

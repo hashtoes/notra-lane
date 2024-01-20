@@ -19,6 +19,6 @@
   .lane {
     box-sizing: border-box;
     border-bottom: 1px dotted;
-    height: 24px;
+    height: 48px;
   }
 </style>

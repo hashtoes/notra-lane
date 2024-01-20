@@ -41,7 +41,7 @@
     user-select: none;
   }
   .lane-pane {
-    height: 80vh;
+    max-height: 80vh;
     overflow-x: hidden;
     overflow-y: scroll;
   }
