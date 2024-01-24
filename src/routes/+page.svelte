@@ -7,14 +7,16 @@
   import { tick } from 'svelte';
 
   let numLanes = Number($page.url.searchParams.get('num')) || 3;
-  let gameOver = false;
 
   let empties = Array<boolean>(numLanes).fill(false);
 
   const onMessage = (result: Result['message'], index: number) => {
-    if (!gameOver && result !== 'correct') {
-      gameOver = true;
+    if (result !== 'correct') {
       alert(result);
+      empties = Array<boolean>(numLanes).fill(true);
+      tick().then(() => {
+        empties = Array<boolean>(numLanes).fill(false);
+      });
       return;
     }
     empties[index] = true;

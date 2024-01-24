@@ -16,8 +16,7 @@
       return;
     }
 
-    if (Math.floor(answer / 10) == val) {
-      accVal = val;
+    if (Math.floor(answer / 10) === accVal) {
       return;
     }
 
