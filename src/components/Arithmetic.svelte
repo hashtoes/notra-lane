@@ -14,8 +14,6 @@
   $: style = cssString({
     'padding-left': `${leftMargin >= 0 ? leftMargin : 0}px`,
     'margin-left': `${leftMargin < 0 ? leftMargin : 0}px`,
-    // TODO: loses border with this.
-    // 'background-color': `${id === $laneId ? '#ababab' : '#ffffff'}`
   });
 
   const dispatch = createEventDispatcher<Result>();
