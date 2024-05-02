@@ -9,13 +9,16 @@
   let numLanes = Number($page.url.searchParams.get('num')) || 3;
 
   let empties = Array<boolean>(numLanes).fill(false);
+  let showingInput = true;
 
   const onMessage = (result: Result['message'], index: number) => {
     if (result !== 'correct') {
       alert(result);
       empties = Array<boolean>(numLanes).fill(true);
+      showingInput = false; // Reset the input value once
       tick().then(() => {
         empties = Array<boolean>(numLanes).fill(false);
+        showingInput = true;
       });
       return;
     }
@@ -33,7 +36,9 @@
     {/each}
   </div>
   <div class="input-pane">
-    <Input answer={$answer} on:message={(e) => onMessage(e.detail, $laneId)} />
+    {#if showingInput}
+      <Input answer={$answer} on:message={(e) => onMessage(e.detail, $laneId)} />
+    {/if}
   </div>
 </div>
 
