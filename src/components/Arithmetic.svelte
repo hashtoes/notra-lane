@@ -20,8 +20,10 @@
   const dispatch = createEventDispatcher<Result>();
 
   const slideSpeed = 1;
-  const slideInterval =
-    Math.floor(Math.random() * 5) + 7 + (Number($page.url.searchParams.get('delay')) || 0);
+  const slideInterval = (() => {
+    const baseInterval = (Number($page.url.searchParams.get('int')) || 15);
+    return baseInterval + (baseInterval * 0.8) * (Math.random() - 0.5);
+  })();
   const problem = generateProblem();
 
   const intervalId = setInterval(() => {

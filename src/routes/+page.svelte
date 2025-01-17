@@ -6,7 +6,7 @@
   import type { Result } from '$lib/types';
   import { tick } from 'svelte';
 
-  let numLanes = Number($page.url.searchParams.get('num')) || 3;
+  let numLanes = Number($page.url.searchParams.get('num')) || 7;
 
   let empties = Array<boolean>(numLanes).fill(false);
   let showingInput = true;
