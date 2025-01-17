@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import { createEventDispatcher, onDestroy } from 'svelte';
   import { charWidth } from '$lib/constants';
   import type { Result } from '$lib/types';
@@ -19,7 +20,8 @@
   const dispatch = createEventDispatcher<Result>();
 
   const slideSpeed = 1;
-  const slideInterval = Math.floor(Math.random() * 5) + 7;
+  const slideInterval =
+    Math.floor(Math.random() * 5) + 7 + (Number($page.url.searchParams.get('delay')) || 0);
   const problem = generateProblem();
 
   const intervalId = setInterval(() => {
