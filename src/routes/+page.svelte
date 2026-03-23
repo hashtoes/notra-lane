@@ -8,8 +8,8 @@
 
   let numLanes = Number($page.url.searchParams.get('num')) || 7;
 
-  let empties = Array<boolean>(numLanes).fill(false);
-  let showingInput = true;
+  let empties = $state(Array<boolean>(numLanes).fill(false));
+  let showingInput = $state(true);
 
   const onMessage = (result: Result['message'], index: number) => {
     if (result !== 'correct') {
@@ -31,13 +31,13 @@
 
 <div class="full-height">
   <div class="lane-pane">
-    {#each empties as empty, idx}
-      <Lane id={idx} {empty} on:message={(e) => onMessage(e.detail, idx)} />
+    {#each empties as empty, idx (idx)}
+      <Lane id={idx} {empty} onmessage={(msg) => onMessage(msg, idx)} />
     {/each}
   </div>
   <div class="input-pane">
     {#if showingInput}
-      <Input answer={$answer} on:message={(e) => onMessage(e.detail, $laneId)} />
+      <Input answer={$answer} onmessage={(msg) => onMessage(msg, $laneId)} />
     {/if}
   </div>
 </div>

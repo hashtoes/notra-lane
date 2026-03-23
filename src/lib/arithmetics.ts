@@ -11,7 +11,7 @@ const operators = [
     forward: (op1: number, op2: number) => op1 + op2,
     backward: (answer: number, op2: number) => answer - op2,
     maxOp2: (answer: number) => answer,
-    adjust: (tempOp1: number, op2: number, tempAnswer: number) => ({
+    adjust: (tempOp1: number, _op2: number, tempAnswer: number) => ({
       op1: tempOp1,
       answer: tempAnswer
     })
@@ -20,8 +20,8 @@ const operators = [
     symbol: '-',
     forward: (op1: number, op2: number) => op1 - op2,
     backward: (answer: number, op2: number) => answer + op2,
-    maxOp2: (answer: number) => MAX_VALUE,
-    adjust: (tempOp1: number, op2: number, tempAnswer: number) => ({
+    maxOp2: (_answer: number) => MAX_VALUE,
+    adjust: (tempOp1: number, _op2: number, tempAnswer: number) => ({
       op1: tempOp1,
       answer: tempAnswer
     })
@@ -31,7 +31,7 @@ const operators = [
     forward: (op1: number, op2: number) => op1 * op2,
     backward: (answer: number, op2: number) => answer / op2,
     maxOp2: (answer: number) => answer / 2,
-    adjust: (tempOp1: number, op2: number, tempAnswer: number) => ({
+    adjust: (tempOp1: number, op2: number, _tempAnswer: number) => ({
       op1: Math.floor(tempOp1),
       answer: Math.floor(tempOp1) * op2
     })
@@ -40,8 +40,8 @@ const operators = [
     symbol: '/',
     forward: (op1: number, op2: number) => op1 / op2,
     backward: (answer: number, op2: number) => answer * op2,
-    maxOp2: (answer: number) => 9, // to adjust the difficulty
-    adjust: (tempOp1: number, op2: number, tempAnswer: number) => ({
+    maxOp2: (_answer: number) => 9, // to adjust the difficulty
+    adjust: (tempOp1: number, _op2: number, tempAnswer: number) => ({
       op1: tempOp1,
       answer: tempAnswer
     })

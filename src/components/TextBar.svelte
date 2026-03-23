@@ -1,11 +1,11 @@
 <script lang="ts">
   import CharBox from './CharBox.svelte';
 
-  export let text: string;
+  let { text }: { text: string } = $props();
 </script>
 
 <div class="text-bar">
-  {#each text as character}
+  {#each text as character, idx (idx)}
     <CharBox {character} />
   {/each}
 </div>

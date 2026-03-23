@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { charWidth } from '$lib/constants';
   import type { Result } from '$lib/types';
   import { cssString } from '$lib/utils';
@@ -8,33 +8,46 @@
   import { answer, laneId } from '$stores/selected';
   import TextBar from './TextBar.svelte';
 
-  export let id: number;
-  export let width: number;
+  let {
+    id,
+    width,
+    onmessage
+  }: { id: number; width: number; onmessage?: (msg: Result['message']) => void } = $props();
 
-  $: leftMargin = Math.random() * width * 2 + width;
-  $: style = cssString({
-    'padding-left': `${leftMargin >= 0 ? leftMargin : 0}px`,
-    'margin-left': `${leftMargin < 0 ? leftMargin : 0}px`,
+  let leftMargin = $state(0);
+  let initialized = false;
+
+  $effect(() => {
+    if (width > 0 && !initialized) {
+      leftMargin = Math.random() * width * 2 + width;
+      initialized = true;
+    }
   });
 
-  const dispatch = createEventDispatcher<Result>();
+  let style = $derived(
+    cssString({
+      'padding-left': `${leftMargin >= 0 ? leftMargin : 0}px`,
+      'margin-left': `${leftMargin < 0 ? leftMargin : 0}px`
+    })
+  );
 
   const slideSpeed = 1;
   const slideInterval = (() => {
-    const baseInterval = (Number($page.url.searchParams.get('int')) || 15);
-    return baseInterval + (baseInterval * 0.8) * (Math.random() - 0.5);
+    const baseInterval = Number($page.url.searchParams.get('int')) || 15;
+    return baseInterval + baseInterval * 0.8 * (Math.random() - 0.5);
   })();
   const problem = generateProblem();
 
   const intervalId = setInterval(() => {
+    if (!initialized) return;
     leftMargin -= slideSpeed;
     if (leftMargin <= -(charWidth * problem.statement.length)) {
       clearInterval(intervalId);
-      dispatch('message', 'timeover');
+      onmessage?.('timeover');
     }
   }, slideInterval);
 
-  const onClick = () => {
+  const onclick = () => {
     answer.set(problem.answer);
     laneId.set(id);
   };
@@ -44,9 +57,9 @@
   });
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="arith" {style} on:click={onClick}>
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="arith" {style} {onclick}>
   <TextBar text={problem.statement} />
 </div>
 

@@ -1,20 +1,22 @@
 <script lang="ts">
   import Arithmetic from './Arithmetic.svelte';
   import { laneId } from '$stores/selected';
+  import type { Result } from '$lib/types';
 
-  export let id: number;
-  export let empty: boolean = false;
+  let {
+    id,
+    empty = false,
+    onmessage
+  }: { id: number; empty?: boolean; onmessage?: (msg: Result['message']) => void } = $props();
 
-  let width: number;
+  let width = $state(0);
 
-  $: classNames = (id === $laneId) ? "lane selected" : "lane";
+  let classNames = $derived(id === $laneId ? 'lane selected' : 'lane');
 </script>
 
-<div bind:clientWidth={width} class="{classNames}">
+<div bind:clientWidth={width} class={classNames}>
   {#if !empty}
-  <!-- <TextBar text="わたのはらやそしまかけてこぎいでぬとひとにはつげよあまのつりぶね" /> -->
-  <!-- <TextBar text="this is a text string. hello world." /> -->
-  <Arithmetic {id} {width} on:message />
+    <Arithmetic {id} {width} {onmessage} />
   {/if}
 </div>
 

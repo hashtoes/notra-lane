@@ -1,8 +1,8 @@
 <script lang="ts">
-  export let char = '';
+  let { char = '', onclick }: { char?: string; onclick?: () => void } = $props();
 </script>
 
-<div class="button" on:click>{char}</div>
+<button class="button" {onclick}>{char}</button>
 
 <style>
   .button {

@@ -2,7 +2,7 @@
   import { charWidth } from '$lib/constants';
   import { cssString } from '$lib/utils';
 
-  export let character: string;
+  let { character }: { character: string } = $props();
 
   const style = cssString({
     width: `${charWidth}px`
