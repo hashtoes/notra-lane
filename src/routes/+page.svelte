@@ -11,9 +11,11 @@
   let empties = $state(Array<boolean>(numLanes).fill(false));
   let showingInput = $state(true);
 
+  let correctNum = 0;
+
   const onMessage = (result: Result['message'], index: number) => {
     if (result !== 'correct') {
-      alert(result);
+      alert(`${result}: ${correctNum}`);
       empties = Array<boolean>(numLanes).fill(true);
       showingInput = false; // Reset the input value once
       tick().then(() => {
@@ -22,6 +24,7 @@
       });
       return;
     }
+    correctNum++;
     empties[index] = true;
     tick().then(() => {
       empties[index] = false;
