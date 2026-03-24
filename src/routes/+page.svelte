@@ -18,6 +18,7 @@
       alert(`${result}: ${correctNum}`);
       empties = Array<boolean>(numLanes).fill(true);
       showingInput = false; // Reset the input value once
+      correctNum = 0;
       tick().then(() => {
         empties = Array<boolean>(numLanes).fill(false);
         showingInput = true;
